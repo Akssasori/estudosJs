@@ -1,0 +1,14 @@
+{
+  "name": "criadoserver",
+  "version": "1.0.0",
+  "description": "Modulo HTTP node",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "author": "Lucas Diniz",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
