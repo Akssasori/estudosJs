@@ -1,6 +1,6 @@
 const { Client } = require("pg");
 
-const cliente = new Client({
+const client = new Client({
   user: "postgres",
   host: "localhost",
   database: "modulo_api_cursos",
@@ -8,7 +8,7 @@ const cliente = new Client({
   port: 5432,
 });
 
-cliente.connect();
+client.connect();
 
 module.exports = {
   client,

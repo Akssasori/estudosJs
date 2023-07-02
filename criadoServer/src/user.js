@@ -1,29 +1,28 @@
 const { randomUUID } = require("crypto");
+const UserRepository = require("./user.repository");
 
 class User {
   constructor() {
     this.users = [];
+    this.userRepository = new UserRepository();
   }
 
   create(body) {
-    const user = {
-      ...body,
-      id: randomUUID(),
-    };
-
-    this.users.push(user);
+    const user = this.userRepository.create(body);
     return user;
   }
 
-  findAll() {
-    return this.users;
+  async findAll() {
+    let result = [];
+    result = await this.userRepository.findAll();
+    return result;
   }
 
   update(body, id) {
     const userIndex = this.users.findIndex((user) => user.id === id);
 
     if (userIndex <= -1) {
-      throw new Error("Usuário não encontrado!")
+      throw new Error("Usuário não encontrado!");
     }
     // Alterar o usuário (ID permanece)
     this.users[userIndex] = {

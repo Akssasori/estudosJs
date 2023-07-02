@@ -13,17 +13,20 @@ const server = http.createServer((request, response) => {
 
   if (URL.startsWith("/users")) {
     if (METHOD === "POST") {
-      request.on("data", (data) => {
+      request.on("data", async(data) => {
         const body = JSON.parse(data);
-        const result = user.create(body);
+        const result = await user.create(body);
 
         return response.end(JSON.stringify(result));
       });
     }
 
     if (METHOD === "GET") {
-      const result = user.findAll();
-      return response.end(JSON.stringify(result));
+      let result = user.findAll();
+      result.then(result => {
+        console.log(result)
+        return response.end(JSON.stringify(result));
+      });
     }
 
     if (METHOD === "PUT") {
