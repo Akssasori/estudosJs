@@ -1,7 +1,9 @@
 const http = require("http");
-const { randomUUID } = require("crypto");
-
-let users = [];
+const user = require("./user");
+// cliente.query("SELECT NOW()", (err, res) => {
+//   console.log("Sucess", res);
+//   cliente.end();
+// })
 
 const server = http.createServer((request, response) => {
   // Cadastro de usuário
@@ -13,21 +15,15 @@ const server = http.createServer((request, response) => {
     if (METHOD === "POST") {
       request.on("data", (data) => {
         const body = JSON.parse(data);
+        const result = user.create(body);
 
-        const user = {
-          ...body,
-          id: randomUUID(),
-        };
-
-        users.push(user);
-        console.log(body);
-
-        return response.end(JSON.stringify(users));
+        return response.end(JSON.stringify(result));
       });
     }
 
     if (METHOD === "GET") {
-      return response.end(JSON.stringify(users));
+      const result = user.findAll();
+      return response.end(JSON.stringify(result));
     }
 
     if (METHOD === "PUT") {
@@ -38,19 +34,16 @@ const server = http.createServer((request, response) => {
         .on("data", (data) => {
           //Receber as informações que quero alterar do nosso body
           const body = JSON.parse(data);
-
-          // Identificar qual usuario dentro do array
-          const userIndex = users.findIndex((user) => user.id === id);
-
-          if (userIndex <= -1) {
-            return response.end(JSON.stringify({message: "Usuário não encontrado!"}))
+          try {
+            user.update(body, id);
+          } catch (err) {
+            console.log(err)
+            return response.end(
+              JSON.stringify({
+                message: err.message,
+              })
+            );
           }
-
-          // Alterar o usuário (ID permanece)
-          users[userIndex] = {
-            ...body,
-            id,
-          };
         })
         .on("end", () => {
           // Retornar usuário alterado
