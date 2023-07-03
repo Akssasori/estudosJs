@@ -13,22 +13,29 @@ class User {
   }
 
   async findAll() {
-    let result = [];
-    result = await this.userRepository.findAll();
-    return result;
+    // let result = [];
+    // result = await this.userRepository.findAll();
+    // return result;
+    return this.userRepository.findAll();
   }
 
-  update(body, id) {
-    const userIndex = this.users.findIndex((user) => user.id === id);
+  async update(body, id) {
+    // const userIndex = this.users.findIndex((user) => user.id === id);
+    const userExists = await this.userRepository.findById(id);
 
-    if (userIndex <= -1) {
-      throw new Error("Usuário não encontrado!");
+    if (!userExists) {
+      throw new Error("Usuário não encontrado!")
     }
-    // Alterar o usuário (ID permanece)
-    this.users[userIndex] = {
-      ...body,
-      id,
-    };
+
+    // if (userIndex <= -1) {
+    //   throw new Error("Usuário não encontrado!");
+    // }
+    // // Alterar o usuário (ID permanece)
+    // this.users[userIndex] = {
+    //   ...body,
+    //   id,
+    // };
+    await this.userRepository.update(body, id);
   }
 }
 module.exports = new User();

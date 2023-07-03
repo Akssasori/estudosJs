@@ -5,7 +5,7 @@ const user = require("./user");
 //   cliente.end();
 // })
 
-const server = http.createServer((request, response) => {
+const server = http.createServer(async (request, response) => {
   // Cadastro de usuário
 
   const METHOD = request.method;
@@ -13,7 +13,7 @@ const server = http.createServer((request, response) => {
 
   if (URL.startsWith("/users")) {
     if (METHOD === "POST") {
-      request.on("data", async(data) => {
+      request.on("data", async (data) => {
         const body = JSON.parse(data);
         const result = await user.create(body);
 
@@ -22,40 +22,38 @@ const server = http.createServer((request, response) => {
     }
 
     if (METHOD === "GET") {
-      let result = user.findAll();
-      result.then(result => {
-        console.log(result)
-        return response.end(JSON.stringify(result));
-      });
+      // let result = user.findAll();
+      // result.then(result => {
+      //   console.log(result)
+      //   return response.end(JSON.stringify(result));
+      // });
+      const result = await user.findAll();
+      return response.end(JSON.stringify(result));
     }
 
     if (METHOD === "PUT") {
       const paramSplit = URL.split("/");
       const id = paramSplit[2];
 
-      request
-        .on("data", (data) => {
-          //Receber as informações que quero alterar do nosso body
-          const body = JSON.parse(data);
-          try {
-            user.update(body, id);
-          } catch (err) {
-            console.log(err)
-            return response.end(
-              JSON.stringify({
-                message: err.message,
-              })
-            );
-          }
-        })
-        .on("end", () => {
-          // Retornar usuário alterado
+      request.on("data", async (data) => {
+        //Receber as informações que quero alterar do nosso body
+        const body = JSON.parse(data);
+        try {
+          await user.update(body, id);
           return response.end(
             JSON.stringify({
               message: "Usuário alterado com sucesso!",
             })
           );
-        });
+        } catch (err) {
+          console.log(err);
+          return response.end(
+            JSON.stringify({
+              message: err.message,
+            })
+          );
+        }
+      });
     }
   }
 });
