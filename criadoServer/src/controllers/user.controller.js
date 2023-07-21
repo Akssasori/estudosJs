@@ -20,9 +20,7 @@ class UserController {
 
   put(request, response) {
     
-    const URL = request.url;
-    const paramSplit = URL.split("/");
-    const id = paramSplit[2];
+    const {id} = request.params;
 
     request.on("data", async (data) => {
       //Receber as informações que quero alterar do nosso body

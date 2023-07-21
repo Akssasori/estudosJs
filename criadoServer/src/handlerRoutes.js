@@ -22,8 +22,27 @@ const handler = (request, response) => {
         return urlSplit.length === routeUrlSplit.length;
     });
 
-    return executeRouter.controller(request, response)
+    if (!executeRouter) {
+        response.statusCode = 404;
 
+        return response.end("Not Found");  
+    }
+
+    const routerSplitUrl = executeRouter.url.split("/").filter(Boolean);
+
+    const objParams = {
+    }
+
+    routerSplitUrl.forEach((item, index) => {
+        console.log(`Item - ${item} -Index ${index}`);
+        if(item.startsWith(":")) {
+            const formatField = item.replace(":", "");
+            objParams[formatField] = urlSplit[index];
+        }
+    });
+
+    request.params = objParams;
+    return executeRouter.controller(request, response)
 };
 
 module.exports = handler;
