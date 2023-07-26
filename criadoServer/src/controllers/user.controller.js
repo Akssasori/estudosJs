@@ -2,13 +2,11 @@ const user = require("../user")
 
 class UserController {
 
-  post(request, response) {
-    request.on("data", async (data) => {
-      const body = JSON.parse(data);
+  async post(request, response) {
+    const { body } = request;
       const result = await user.create(body);
-
       return response.end(JSON.stringify(result));
-    });
+
   }
 
   async get(request, response) {
@@ -18,13 +16,11 @@ class UserController {
 
   }
 
-  put(request, response) {
+  async put(request, response) {
     
     const {id} = request.params;
+    const { body } = request;
 
-    request.on("data", async (data) => {
-      //Receber as informações que quero alterar do nosso body
-      const body = JSON.parse(data);
       try {
         await user.update(body, id);
         return response.end(
@@ -40,7 +36,6 @@ class UserController {
           })
         );
       }
-    });
   }
 }
 
