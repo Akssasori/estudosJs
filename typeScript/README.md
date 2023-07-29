@@ -3,3 +3,6 @@ npm i typescript -D  << -D colocamos para dizer que é uma dependenci de desenvo
 
 configurando o typeScript
 npx tsc --init
+
+dependencia para compilar o typeScript
+npm i ts-node

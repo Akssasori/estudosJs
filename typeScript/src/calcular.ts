@@ -2,6 +2,6 @@ function calcular(num1: number, num2: number) {
     return num1+num2;
 }
 
-const resultado = calcular(1,1);
+const resultado = calcular(2,2);
 
-console.log(resultado);
+console.log("A soma é: " + resultado);
