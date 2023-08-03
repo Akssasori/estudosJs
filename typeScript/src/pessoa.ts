@@ -1,5 +1,5 @@
 
-type Pessoa = {
+type PessoaT = {
     nome: string,
     idade: number,
     email: string,
@@ -7,19 +7,19 @@ type Pessoa = {
     password: string
 }
 
-type Funcionario = Pessoa & {
+type Funcionario = PessoaT & {
     salario: number
     comissao:number
     tipo: 'funcionario'
 }
 
-type Gerente = Pessoa & {
+type Gerente = PessoaT & {
     PLR: number
     cartãoDeCredito: string
     tipo: 'gerente'
 }
 
-const novaPessoa: Pessoa = {
+const novaPessoa: PessoaT = {
     nome: 'Lucas',
     idade: 32,
     email: 'diniz3003@gmail.com',

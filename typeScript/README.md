@@ -6,3 +6,7 @@ npx tsc --init
 
 dependencia para compilar o typeScript
 npm i ts-node
+
+para rodar um ts
+npx nodemon src/transporte.ts
+
